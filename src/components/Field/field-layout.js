@@ -1,7 +1,7 @@
 import styles from './field.module.css';
 
-export const FieldLayout = ({ field, onChangeField }) => {
-    const { id, label, type, value, error } = field;
+export const FieldLayout = ({ field, registerField }) => {
+    const { id, label, type, error } = field;
 
     /* prettier-ignore */
     return (
@@ -13,8 +13,7 @@ export const FieldLayout = ({ field, onChangeField }) => {
                     type={type}
                     id={id}
                     name={id}
-                    value={value}
-                    onChange={onChangeField}
+                    {...registerField(id)}
                 />
             </div>
             <div className={styles.field__message}>

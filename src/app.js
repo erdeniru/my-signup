@@ -1,67 +1,58 @@
 import { useEffect, useRef, useState } from 'react';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
 import { FormLayout, FieldLayout } from './components';
 import { useStore } from './store';
 import { sendFormData } from './service';
 import { AppLayout } from './app-layout';
 
+const fieldsScheme = yup.object().shape({
+    email: yup
+        .string()
+        .required('Электронная почта не указана')
+        .matches(/\S+@\S+\.\S+/, 'Электронная почта должна содержать @ и .'),
+    password: yup
+        .string()
+        .required('Пароль не указан')
+        .min(8, 'Пароль должен содержать не меньше 8 символов'),
+    repasswd: yup
+        .string()
+        .required('Повторный пароль не указан')
+        .oneOf([yup.ref('password'), null], 'Пароли должны совпадать'),
+});
+
 export const App = () => {
-    const { getState, getData, updateState, getFieldById, checkValidation } = useStore();
+    const { getState, getData, checkValidation } = useStore();
 
     const [isSubmitFocus, setIsSubmitFocus] = useState(false);
     const submitButtonRef = useRef(null);
 
-    const checkEmail = (value) => {
-        if (value === '') {
-            return 'Электронная почта не указана';
-        } else if (!/\S+@\S+\.\S+/.test(value)) {
-            return 'Электронная почта должна содержать @ и .';
-        }
-        return null;
-    };
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
+        defaultValues: getData(),
+        resolver: yupResolver(fieldsScheme),
+    });
 
-    const checkPassword = (value) => {
-        if (value === '') {
-            return 'Пароль не указан';
-        } else if (value.length < 8) {
-            return 'Пароль должен содержать не меньше 8 символов';
-        }
-        return null;
-    };
-
-    const checkRepasswd = (value) => {
-        if (value === '') {
-            return 'Повторный пароль не указан';
-        } else if (value !== password.value) {
-            return 'Пароли должны совпадать';
-        }
-        return null;
-    };
-
-    const onChange = (event, checkError, isAutoFocus = false) => {
-        const { target } = event;
-        const { id, value } = target;
-
-        const field = getFieldById(id);
-        const error = checkError(value);
-
-        updateState(id, { ...field, value, error });
-
-        setIsSubmitFocus(isAutoFocus && error === null);
-    };
-
-    const onSubmit = (event) => {
-        event.preventDefault();
-
-        sendFormData(getData());
+    const onSubmit = (formData) => {
+        sendFormData(formData);
     };
 
     const { email, password, repasswd } = getState();
+    email.error = errors.email ? errors.email.message : null;
+    password.error = errors.password ? errors.password.message : null;
+    repasswd.error = errors.repasswd ? errors.repasswd.message : null;
 
     const formState = {
         isValid: checkValidation(),
-        onSubmit,
+        onSubmit: handleSubmit(onSubmit),
         submitButtonRef,
     };
+
+    if (!isSubmitFocus) setIsSubmitFocus(checkValidation());
 
     useEffect(() => {
         if (isSubmitFocus) submitButtonRef.current.focus();
@@ -71,9 +62,9 @@ export const App = () => {
     return (
         <AppLayout>
             <FormLayout {...formState}>
-                <FieldLayout field={email} onChangeField={(event) => onChange(event, checkEmail, false)} />
-                <FieldLayout field={password} onChangeField={(event) => onChange(event, checkPassword, false)} />
-                <FieldLayout field={repasswd} onChangeField={(event) => onChange(event, checkRepasswd, true)} />
+                <FieldLayout field={email} registerField={register} />
+                <FieldLayout field={password} registerField={register} />
+                <FieldLayout field={repasswd} registerField={register} />
             </FormLayout>
         </AppLayout>
     );

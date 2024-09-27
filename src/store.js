@@ -40,6 +40,6 @@ export const useStore = () => {
         getFieldById: (fieldId) => state[fieldId],
         checkValidation: () =>
             /* prettier-ignore */
-            Object.values(state).every((field) => field.value !== '' && field.error === null),
+            Object.values(state).every((field) => field.error === null),
     };
 };
