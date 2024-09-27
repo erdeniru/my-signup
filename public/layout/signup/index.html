@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Sign Up</title>
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body>
+        <main class="main">
+            <form class="signup">
+                <h2 class="signup__title">Регистрация</h2>
+                <div class="signup__content">
+                    <div class="field-box">
+                        <div class="field-box__field">
+                            <label for="email">Email</label>
+                            <input id="email" type="email" autocomplete="off" />
+                        </div>
+                        <div class="field-box__message"></div>
+                    </div>
+                    <div class="field-box">
+                        <div class="field-box__field">
+                            <label for="password">Password</label>
+                            <input id="password" type="password" />
+                        </div>
+                        <div class="field-box__message">
+                            <span class="text_red"
+                                >Пароль должен содержать не меньше 8 символов</span
+                            >
+                        </div>
+                    </div>
+                    <div class="field-box">
+                        <div class="field-box__field">
+                            <label for="repasswd">Re-password</label>
+                            <input id="repasswd" type="password" />
+                        </div>
+                        <div class="field-box__message">
+                            <span class="text_red">Пароли не совпадают</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="signup__submit">Зарегистрироваться</button>
+            </form>
+        </main>
+    </body>
+</html>

@@ -1,0 +1,31 @@
+.signup {
+    padding: 4vw;
+
+    background: #ffffff;
+    box-shadow: 0 1vw 1.5vw 0 rgba(0, 0, 0, 0.15);
+
+    width: 60%;
+    max-width: 720px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2vw;
+}
+
+.signup__title {
+    margin: 0;
+    color: #4c4c4c;
+    font-size: 2em;
+    font-weight: 300;
+}
+
+.signup__content {
+    align-self: stretch;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    gap: 1vw;
+}

@@ -1,0 +1,17 @@
+.btn {
+    color: #fefefe;
+    padding: 1vw 1.5vw;
+    cursor: pointer;
+    background: hsla(9, 50%, 45%, 1);
+    border: none;
+    border-radius: 2px;
+    font-weight: 300;
+}
+
+.btn:hover:enabled {
+    background: hsla(9, 50%, 45%, 0.75);
+}
+
+.btn_gray {
+    background: #777;
+}
